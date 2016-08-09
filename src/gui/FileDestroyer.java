@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import utils.FileDrop;
-@SuppressWarnings({"serial","unused"})
+@SuppressWarnings({"serial"})
 public class FileDestroyer extends JFrame{
 
 	private ArrayList<File> criminals = new ArrayList<>();
@@ -22,6 +22,7 @@ public class FileDestroyer extends JFrame{
 	private int selectedIndex = -1;
 	private JPanel panel = new JPanel();
 	private void initUI(){
+		list.setVisible(false);
 		JButton deleteSelected = new JButton("Delete selected"),
 				deleteAll = new JButton("Delete all");
 		panel.add(list);
@@ -41,8 +42,9 @@ public class FileDestroyer extends JFrame{
 			}
 		});
 		deleteAll.addActionListener((e)->{
-			for(File f:criminals)
-				f.delete();
+			/*for(File f:criminals)
+				f.delete();*/
+			criminals.stream().forEach((f)->deleteFiles(f));	
 		});
 		setContentPane(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,13 +52,27 @@ public class FileDestroyer extends JFrame{
 		this.setLocationRelativeTo(null);
 		setVisible(true);
 	}
+	public void deleteFiles(File e){
+		if(e==null)
+			return;
+		if(e.isDirectory())
+			for(File inner:e.listFiles())
+				deleteFiles(inner);
+		else
+			e.delete();
+	}
 	public FileDestroyer(){
 		initUI();
 		new FileDrop(this,(e)->{
-			for(File f:e){
+			/*for(File f:e){
 				criminals.add(f);
 				model.addElement(f.getName()+(f.isDirectory()?" (Folder)":""));
-			}
+			}*/
+			Stream.of(e).forEach((f)->{
+				criminals.add(f);
+				model.addElement(f.getName()+(f.isDirectory()?" (Folder)":""));
+			});
+			list.setVisible(!criminals.isEmpty());
 		});
 	}
 	public static void main(String[] args) {
