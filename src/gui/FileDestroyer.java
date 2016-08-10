@@ -41,7 +41,7 @@ public class FileDestroyer extends JFrame{
 				criminals.remove(selectedIndex);
 			}
 		});
-		list.addChangeListener((e)->selectedIndex = list.getSelectedIndex());
+		list.addActionListener((e)->selectedIndex = list.getSelectedIndex());
 		deleteAll.addActionListener((e)->{
 			/*for(File f:criminals)
 				f.delete();*/
