@@ -45,8 +45,8 @@ public class FileDestroyer extends JFrame{
 		deleteAll.addActionListener((e)->{
 			/*for(File f:criminals)
 				f.delete();*/
-				if(criminals.isEmpty())
-					return;
+			if(criminals.isEmpty())
+				return;
 			criminals.stream().forEach((f)->deleteFiles(f));	
 		});
 		setContentPane(panel);
@@ -75,6 +75,7 @@ public class FileDestroyer extends JFrame{
 				criminals.add(f);
 				model.addElement(f.getName()+(f.isDirectory()?" (Folder)":""));
 			});
+			
 			list.setVisible(!criminals.isEmpty());
 		});
 	}
